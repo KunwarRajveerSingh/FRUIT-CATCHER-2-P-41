@@ -1,57 +1,49 @@
-var hr, min, sec, hrAngle, minAngle, secAngle
+var database;
+var back_img;
+var gameState =0;
+var playerCount = 0;
+var allPlayers;
+
+var player, form,game;
+var player1,player2;
+var players;
+var fruits;
+var fruitGroup;
+var fruit1_img, fruit2_img, fruit3_img, fruit4_img, fruit5_img;
+var player_img;
 
 
-
+function preload(){
+  back_img = loadImage("images/jungle.jpg");
+  player_img = loadImage("images/basket2.png");
+  fruit1_img = loadImage("images/apple2.png");
+  fruit2_img = loadImage("images/banana2.png");
+  fruit3_img = loadImage("images/melon2.png");
+  fruit4_img = loadImage("images/orange2.png");
+  fruit5_img = loadImage("images/pineapple2.png");
+  fruitGroup = new Group();
+}
 function setup() {
-  createCanvas(400, 400);
-  angleMode(DEGREES);
-
+  createCanvas(1000, 600);
+  database = firebase.database();
+  game = new Game();
+  game.getState();
+  game.start();
+  
 }
 
 function draw() {
-  background(255, 255, 255);
-
-
-  translate(200, 200)
-  rotate(-90)
-
-  hr = hour();
-  min = minute();
-  sec = second()
-
-  secAngle = map(sec, 0, 60, 0, 360)
-  minAngle = map(min, 0, 60, 0, 360)
-  hrAngle = map(hr % 12, 0, 12, 0, 360)
-
-push()
-rotate(secAngle)
-strokeWeight(7)
-stroke("black")
-line(0,0 ,100,0)
-pop()
-
-
-push()
-rotate(minAngle)
-strokeWeight(7)
-stroke("green")
-line(0,0 ,75,0)
-pop()
-
-push()
-rotate(hrAngle)
-strokeWeight(7)
-stroke("blue")
-line(0,0 ,50,0)
-pop()
-
-strokeWeight(10)
-noFill()
-arc(0,0,300,300,0,secAngle)
-stroke("blue")
-arc(0,0,280,280,0,minAngle)
-stroke("green")
-arc(0,0,260,260,0,hrAngle)
-
-
+  background(back_img);
+  
+   if (playerCount === 2) {
+     game.update(1);
+   }
+   if (gameState === 1) {
+     clear(); 
+     game.play();
+   }
+   if (gameState === 2) {
+    
+     game.end();
+   }
 }
